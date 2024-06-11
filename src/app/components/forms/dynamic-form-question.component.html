@@ -1,0 +1,83 @@
+<div [formGroup]="form">
+  <div class="sm:col-span-4">
+    <label
+      [attr.for]="question.key"
+      class="block text-sm font-medium leading-6 text-gray-900"
+      >{{ question.label }}</label
+    >
+    <div class="mt-2 my-3">
+      @switch (question.controlType) { @case ('textbox') { @if (question.type ==
+      'password') {
+      <p-password [formControlName]="question.key" toggleMask="true" />
+      }@else{
+      <input
+        [formControlName]="question.key"
+        [id]="question.key"
+        [type]="question.type"
+        class="form-input"
+      />
+      } } @case ('dropdown') {
+      <select
+        [id]="question.key"
+        [formControlName]="question.key"
+        class="form-input"
+      >
+        @for (opt of question.options; track opt) {
+        <option [value]="opt.key">{{ opt.value }}</option>
+        }
+      </select>
+      } @case ('datepicker'){
+      <p-calendar [formControlName]="question.key" dateFormat="yy-mm-dd" />
+      } @case ('mobile'){
+      <div class="flex">
+        <select
+          [id]="question.key + '_prefix'"
+          [formControlName]="question.key + '_prefix'"
+          class="form-input w-1/3 rounded-e-none"
+        >
+          @for (opt of question.options; track opt) {
+          <option [value]="opt.key">{{ opt.value }}</option>
+          }
+        </select>
+        <input
+          [formControlName]="question.key + '_no'"
+          [id]="question.key + '_no'"
+          type="number"
+          class="form-input w-2/3 rounded-s-none"
+        />
+      </div>
+      <div class="flex">
+        <div  *ngIf="form.controls[question.key + '_prefix']?.invalid &&
+        (form.controls[question.key + '_prefix']?.dirty ||
+        form.controls[question.key + '_prefix']?.touched)" class="text-red-500 text-xs w-1/3">
+          <div *ngIf="form.controls[question.key + '_prefix']?.errors?.['required']">
+            Mobile Prefix is required.
+          </div>
+        </div>
+        <div class="w-2/3" *ngIf="form.controls[question.key + '_no']?.invalid &&
+        (form.controls[question.key + '_no']?.dirty ||
+        form.controls[question.key + '_no']?.touched)" class="text-red-500 text-xs w-2/3">
+          <div *ngIf="form.controls[question.key + '_no']?.errors?.['required']">
+            {{ question.label }} is required.
+          </div>
+        </div>
+      </div>
+      } @case ('switch'){
+      <p-inputSwitch [formControlName]="question.key" inputId="question.key" />
+      } } 
+      <div *ngIf="form.controls[question.key]?.invalid &&
+      (form.controls[question.key]?.dirty ||
+      form.controls[question.key]?.touched)" class="text-red-500 text-xs">
+        <div *ngIf="form.controls[question.key]?.errors?.['required']">
+          {{ question.label }} is required.
+        </div>
+        <div *ngIf="form.controls[question.key]?.errors?.['email']">
+          Please enter a valid email.
+        </div>
+        <div *ngIf="form.controls[question.key]?.errors?.['minlength']">
+          Please enter a minimum of {{ form.controls[question.key].errors?.['minlength'].requiredLength }} characters
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

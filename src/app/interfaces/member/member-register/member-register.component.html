@@ -1,0 +1,22 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <div class="grid grid-cols-2 gap-4 mb-5">
+    <app-card [title]="'Sponsor Info'">
+      <div class="p-4">
+        @for (question of questions; track question) {
+        <div class="form-row">
+          <app-question
+            [form]="registerForm"
+            [question]="question"
+            (change)="handleInputChange($event)"
+          ></app-question>
+        </div>
+        }
+      </div>
+    </app-card>
+    <app-card [title]="'Downline Info'"></app-card>
+   
+  </div>
+  <div class="flex justify-center form-row">
+    <button type="submit" class="w-32 btn-primary">Save</button>
+  </div>
+</form>

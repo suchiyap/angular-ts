@@ -1,0 +1,96 @@
+<div class="grid grid-cols-2 gap-4">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center">
+      <img [src]="logo" alt="Logo" class="w-1/2">
+      <h2
+        class="mt-5 text-2xl font-bold leading-9 tracking-tight text-gray-900"
+      >
+        Sign in to your account
+      </h2>
+    </div>
+  
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" [formGroup]="loginForm" (submit)="postLogin()">
+        <div>
+          <label
+            for="username"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Username</label
+          >
+          <div class="mt-2">
+            <input
+              id="username"
+              formControlName="username"
+              type="text"
+              autocomplete="username"
+              required
+              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary focus-visible:outline-none sm:text-sm sm:leading-6"
+            />
+            <!-- {{  | json }}   --> <!-- print for object -->
+            <div
+              *ngIf="loginForm.controls.username.invalid && (loginForm.controls.username.dirty || loginForm.controls.username.touched)"
+              class="text-red-500 text-xs"
+            >
+              <div *ngIf="loginForm.controls.username.errors?.['required']">Username is required.</div>
+              <!-- <div *ngIf="loginForm.controls.email.errors?.['email']">
+                Please enter a valid email.
+              </div> -->
+            </div>
+          </div>
+        </div>
+  
+        <div>
+          <div class="flex items-center justify-between">
+            <label
+              for="password"
+              class="block text-sm font-medium leading-6 text-gray-900"
+              >Password</label
+            >
+            <div class="text-sm">
+              <a
+                href="#"
+                class="font-semibold text-primary hover:text-indigo-500"
+                >Forgot password?</a
+              >
+            </div>
+          </div>
+          <div class="mt-2">
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              minlength="6"
+              class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary focus-visible:outline-none sm:text-sm sm:leading-6"
+            />
+            <div
+              *ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)"
+              class="text-red-500 text-xs"
+            >
+              <div *ngIf="loginForm.controls.password.errors?.['required']">
+                Password is required.
+              </div>
+              <div *ngIf="loginForm.controls.password.errors?.['minlength']">
+                Min 6 characters
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div>
+          <button
+            type="submit"
+            class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed"
+            [disabled]="loginForm.invalid"
+          >
+            Sign in
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <img src="../../../../assets/images/auth-bg.jpeg" alt="Auth Background" srcset="" class="w-full">
+  </div>
+</div>
