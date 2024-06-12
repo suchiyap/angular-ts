@@ -1,7 +1,7 @@
 export class GlobalConstants {
   public static appURL: string = "http://localhost:4200/";  
-  public static storageURL: string = "https://std-mlm-api.securevws.com/storage/";
-  public static apiURL: string = "https://std-mlm-api.securevws.com/api/admin";
+  public static storageURL: string = "http://127.0.0.1/8000/storage/";
+  public static apiURL: string = "http://127.0.0.1/8000/api/admin";
 }
 
 export function getObjectKeys(obj: any): string[] {
