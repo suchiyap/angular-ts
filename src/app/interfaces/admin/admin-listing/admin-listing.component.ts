@@ -1,34 +1,33 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Member, MemberService } from '../../../services/member/member.service';
+import { Admin, AdminService } from '../../../services/admin/admin.service';
 import { getObjectKeys, getRowIndex } from '../../../common/global-constant';
+import { QuestionBase } from '../../../components/forms/question-base';
+import { TextboxQuestion } from '../../../components/forms/question-text';
+import { CryptService } from '../../../services/common/crypt.service';
+import Swal from 'sweetalert2';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { DynamicFormQuestionComponent } from '../../../components/forms/dynamic-form-question.component';
+import { CommonModule } from '@angular/common';
 import { TableComponent } from '../../../components/layouts/table/table.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AccordionComponent } from '../../../components/layouts/accordion/accordion.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { QuestionBase } from '../../../components/forms/question-base';
-import { TextboxQuestion } from '../../../components/forms/question-text';
-import { DynamicFormQuestionComponent } from '../../../components/forms/dynamic-form-question.component';
-import Swal from 'sweetalert2';
 import { RouterLink } from '@angular/router';
-import { CryptService } from '../../../services/common/crypt.service';
 
 @Component({
-  selector: 'app-member-listing',
+  selector: 'app-admin-listing',
   standalone: true,
   imports: [DynamicFormQuestionComponent, CommonModule, ReactiveFormsModule, TableComponent, NgxPaginationModule, AccordionComponent, RouterLink],
-  templateUrl: './member-listing.component.html',
-  styleUrls: ['./member-listing.component.scss']
+  templateUrl: './admin-listing.component.html',
+  styleUrl: './admin-listing.component.scss'
 })
-export class MemberListingComponent {
-  memberLists: Member[] = [];
+export class AdminListingComponent {
+  adminLists: Admin[] = [];
   headers = [
     'Actions',
     'No.',
-    'Country',
-    'Member Info',
+    'Admin Info',
     'Contact Info',
-    'Referral',
+    'Group',
     'Status',
     'Created',
     'Updated'
@@ -50,7 +49,6 @@ export class MemberListingComponent {
   searchForm= new FormGroup({
     username: new FormControl(''),
     name: new FormControl(''),
-    email: new FormControl(''),
   });
 
   @Input() questions: QuestionBase<string>[] | null = [
@@ -68,45 +66,38 @@ export class MemberListingComponent {
       required: true,
       order: 1,
     }),
-    new TextboxQuestion({
-      key: 'email',
-      label: 'Email',
-      name: 'email',
-      required: true,
-      order: 1,
-    }),
   ];
   
-  constructor(private memberService: MemberService, public cryptService: CryptService) {}
+  constructor(private adminService: AdminService, public cryptService: CryptService) {}
 
   ngOnInit() {
-    this.getMemberListing({limit: this.maxSize});
+    this.getAdminListing({limit: this.maxSize});
   }
 
-  getMemberListing (param: {}) {
-    this.memberService.getMemberListing(param).subscribe({
+  getAdminListing (param: {}) {
+    this.adminService.getAdminListing(param).subscribe({
       next: (data) => {
         this.loading = false;
-        this.memberLists = data?.results?.data.map((member: { id: any; }) => ({
-          ...member,
-          encryptedId: this.cryptService.encrypt((member.id).toString())
+        this.adminLists = data?.results?.data.map((admin: { id: any; }) => ({
+          ...admin,
+          encryptedId: this.cryptService.encrypt((admin.id).toString())
         }));
-        console.log(this.memberLists);
+        console.log(this.adminLists);
         this.totalItems = data?.results?.meta?.total;
 
       },
       error: (error: any) => {
-        console.error('Error fetching member listings', error);
+        console.error('Error fetching admin listings', error);
       },
       complete: () => {
-        console.log('Member listing fetch completed');
+        console.log('Admin listing fetch completed');
       }
     });
   }
 
-  deleteMember(id: number) {
+  deleteAdmin(id: number) {
     Swal.fire({
-      title: 'Are you sure want to remove this member?',
+      title: 'Are you sure want to remove this admin?',
       text: 'You will not be able to recover',
       icon: 'warning',
       showCancelButton: true,
@@ -114,16 +105,16 @@ export class MemberListingComponent {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        this.memberService.removeMember(id).subscribe({
+        this.adminService.removeAdmin(id).subscribe({
           next: (data) => {
             Swal.fire({
               text: data?.message,
               icon: 'success', 
             });
-            this.getMemberListing({page: this.currentPage, limit: this.maxSize});
+            this.getAdminListing({page: this.currentPage, limit: this.maxSize});
           },
           error: (error: any) => {
-            console.error('Error fetching member listings', error);
+            console.error('Error fetching admin listings', error);
           },
           complete: () => {
             
@@ -135,21 +126,20 @@ export class MemberListingComponent {
 
   handlePageChange(page: number) {
     this.currentPage = page;
-    this.getMemberListing({page: page, limit: this.maxSize});
+    this.getAdminListing({page: page, limit: this.maxSize});
   }
 
   onSubmit() {
     let data = this.searchForm.value;
 
-    this.getMemberListing({page: this.currentPage, limit: this.maxSize, ...data});
+    this.getAdminListing({page: this.currentPage, limit: this.maxSize, ...data});
   }
 
   onReset() {
     this.searchForm.reset({
       name: '',
-      email: '',
       username: ''
     });
-    this.getMemberListing({page: this.currentPage, limit: this.maxSize});
+    this.getAdminListing({page: this.currentPage, limit: this.maxSize});
   }
 }

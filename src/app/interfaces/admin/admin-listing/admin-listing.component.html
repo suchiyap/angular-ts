@@ -1,5 +1,5 @@
 <div class="container">
-  <h2 class="my-4">Member Listing Table</h2>
+  <h2 class="my-4">Admin Listing Table</h2>
   <app-accordion title="Search Option">
     <form (ngSubmit)="onSubmit()" [formGroup]="searchForm">
       <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-5">
@@ -31,10 +31,10 @@
     </form>
   </app-accordion>
   <app-table [headers]="headers" (pageChange)="handlePageChange($event)" [loading]="loading">
-    <ng-container *ngIf="memberLists.length">
+    <ng-container *ngIf="adminLists.length">
       <tr
         *ngFor="
-          let user of memberLists
+          let user of adminLists
             | paginate
               : {
                   itemsPerPage: maxSize,
@@ -47,7 +47,7 @@
         <td>
           <div class="flex justify-center">
             <button class="p-2"
-            (click)="deleteMember(user.id)">
+            (click)="deleteAdmin(user.id)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6"
@@ -91,7 +91,7 @@
                 />
               </svg>
             </button>
-            <a [routerLink]="['/member-profile', user.encryptedId]" class="p-2">
+            <a [routerLink]="['/admin-profile', user.encryptedId]" class="p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-6 h-6"
@@ -110,21 +110,20 @@
           </div>
         </td>
         <td>{{ getRowIndex(i, this.currentPage, this.maxSize) }}</td>
-        <td>{{ user.country_desc }}</td>
         <td>
           {{ user.name }} <br />
           {{ user.username }}
         </td>
         <td>{{ user.email }}</td>
-        <td>{{ user.referral_name }}</td>
+        <td>{{ user.sys_group_name }}</td>
         <td><span [class.badge-active]="user.status_desc == 'Active'" [class.badge-inactive]="user.status_desc == 'Inactive'">{{ user.status_desc }}</span></td>
         <td>{{ user.created_at }}<br />{{ user.created_by }}</td>
         <td>{{ user.updated_at }}<br />{{ user.updated_by }}</td>
       </tr>
     </ng-container>
-    <ng-container *ngIf="memberLists.length == 0 && !loading">
+    <ng-container *ngIf="adminLists.length == 0 && !loading">
       <tr class="text-center">
-        <td colspan="9">No data available</td>
+        <td colspan="8">No data available</td>
       </tr>
     </ng-container>
   </app-table>

@@ -6,6 +6,8 @@ import { DashboardComponent } from './interfaces/dashboard/dashboard/dashboard.c
 import { NgModule } from '@angular/core';
 import { MemberListingComponent } from './interfaces/member/member-listing/member-listing.component';
 import { MemberEditComponent } from './interfaces/member/member-edit/member-edit.component';
+import { AdminListingComponent } from './interfaces/admin/admin-listing/admin-listing.component';
+import { AdminEditComponent } from './interfaces/admin/admin-edit/admin-edit.component';
 
 export const routes: Routes = [
   // /* lazy load components */
@@ -14,6 +16,8 @@ export const routes: Routes = [
   { path: 'member-register', title: 'Member Register', component: MemberRegisterComponent, canActivate: [authGuard] },
   { path: 'member-listing', title: 'Member Lists', component: MemberListingComponent, canActivate: [authGuard] },
   { path: 'member-profile/:id', title: 'Member Profile', component: MemberEditComponent, canActivate: [authGuard]},
+  { path: 'admin-listing', title: 'Admin Lists', component: AdminListingComponent, canActivate: [authGuard] },
+  { path: 'admin-profile/:id', title: 'Admin Profile', component: AdminEditComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

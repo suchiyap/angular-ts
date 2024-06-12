@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CryptService } from '../../../services/common/crypt.service';
 import {
   MemberDetails,
@@ -44,10 +44,12 @@ export class MemberEditComponent {
     private route: ActivatedRoute,
     private cryptService: CryptService,
     private memberService: MemberService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private router:Router,
   ) {}
 
   loginInfoForm = new FormGroup({
+    _method: new FormControl('PUT'),
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
@@ -253,6 +255,7 @@ export class MemberEditComponent {
         this.memberDetails = data?.results;
 
         this.loginInfoForm.setValue({
+          _method: 'PUT',
           username: this.memberDetails.username,
           password: '',
           password_confirmation: '',
@@ -284,14 +287,24 @@ export class MemberEditComponent {
     if (!this.loginInfoForm.invalid) {
       let data = this.loginInfoForm.value;
 
-      this.memberService.updateMember({ ...data }, this.id);
+      this.memberService.updateMember(data, this.id).subscribe({
+        next: (data) => {
+          Swal.fire({
+            text: data?.message,
+            icon: 'success',
+          });
+          this.getMemberDetails();
+        },
+        complete: () => {
+          console.log('Member login updated successfully');
+        },
+      });
     }else{
       markAllAsTouched(this.loginInfoForm);
     }
   }
 
   onMemberDetailSubmit() {
-    console.log(this.memberform);
     if (!this.memberform.invalid) {
       let data = this.memberform.value;
       data['status'] = data.status ? 'A' : 'I';
@@ -303,13 +316,8 @@ export class MemberEditComponent {
             text: data?.message,
             icon: 'success',
           });
-          this.getMemberDetails();
-        },
-        error: (error: any) => {
-          Swal.fire({
-            text: error,
-            icon: 'error',
-          });
+          // this.getMemberDetails();
+          this.router.navigate(['/member-listing']);
         },
         complete: () => {
           console.log('Member detailed updated successfully');

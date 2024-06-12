@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { LoginService } from '../services/auth/login/login.service';
+import Swal from 'sweetalert2';
 
 
 // @Injectable()
@@ -60,6 +61,10 @@ export const HeaderInterceptor: HttpInterceptorFn = (req, next) => {
         console.error('An error occurred:', err);
       }
 
+      Swal.fire({
+        text: err?.error.message,
+        icon: 'error',
+      });
       // Re-throw the error to propagate it further
       return throwError(() => err); 
     }),

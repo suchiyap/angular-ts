@@ -278,25 +278,56 @@
       <span [class.hidden]="!isOpen" class="ms-5">Settings</span>
     </a>
     <a
-      class="flex py-2.5 px-4 rounded transition duration-200 hover:bg-gray-300 hover:text-primary mb-2"
+      class="flex py-2.5 rounded transition duration-200 hover:bg-gray-300 hover:text-primary items-center mb-2"
+      [class.px-2]="!isOpen"
+      [class.px-4]="isOpen"
       [class.justify-center]="!isOpen"
-      href="#"
+      href="javascript:;"
+      (click)="toggleDropdown('admin')"
     >
       <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-6 h-6"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M19 18.0039V17C19 15.8954 18.1046 15 17 15C15.8954 15 15 15.8954 15 17V18.0039M4 21C4 17.134 7.13401 14 11 14C11.3395 14 11.6734 14.0242 12 14.0709M15.5 21H18.5C18.9659 21 19.1989 21 19.3827 20.9239C19.6277 20.8224 19.8224 20.6277 19.9239 20.3827C20 20.1989 20 19.9659 20 19.5C20 19.0341 20 18.8011 19.9239 18.6173C19.8224 18.3723 19.6277 18.1776 19.3827 18.0761C19.1989 18 18.9659 18 18.5 18H15.5C15.0341 18 14.8011 18 14.6173 18.0761C14.3723 18.1776 14.1776 18.3723 14.0761 18.6173C14 18.8011 14 19.0341 14 19.5C14 19.9659 14 20.1989 14.0761 20.3827C14.1776 20.6277 14.3723 20.8224 14.6173 20.9239C14.8011 21 15.0341 21 15.5 21ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+      <span [class.hidden]="!isOpen" class="ms-5">Admin</span>
+      <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="w-6 h-6"
-        viewBox="0 0 24 24"
+        class="w-4 h-4 transition-transform duration-200 ms-auto"
+        [class.rotate-180]="isDropdownOpen('admin') && isOpen"
+        [class.-rotate-90]="!isOpen && !isDropdownOpen('admin')"
+        [class.rotate-90]="!isOpen && isDropdownOpen('admin')"
         fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
       >
         <path
-          d="M19 18.0039V17C19 15.8954 18.1046 15 17 15C15.8954 15 15 15.8954 15 17V18.0039M4 21C4 17.134 7.13401 14 11 14C11.3395 14 11.6734 14.0242 12 14.0709M15.5 21H18.5C18.9659 21 19.1989 21 19.3827 20.9239C19.6277 20.8224 19.8224 20.6277 19.9239 20.3827C20 20.1989 20 19.9659 20 19.5C20 19.0341 20 18.8011 19.9239 18.6173C19.8224 18.3723 19.6277 18.1776 19.3827 18.0761C19.1989 18 18.9659 18 18.5 18H15.5C15.0341 18 14.8011 18 14.6173 18.0761C14.3723 18.1776 14.1776 18.3723 14.0761 18.6173C14 18.8011 14 19.0341 14 19.5C14 19.9659 14 20.1989 14.0761 20.3827C14.1776 20.6277 14.3723 20.8224 14.6173 20.9239C14.8011 21 15.0341 21 15.5 21ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
-          stroke="currentColor"
-          stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
-        />
-      </svg>
-      <span [class.hidden]="!isOpen" class="ms-5">Admin</span>
-    </a>
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        /></svg>
+      </a>
+      <ul class="py-2 space-y-2" [class.hidden]="!isDropdownOpen('admin') || !isOpen">
+        <li
+          class="flex py-2.5 px-4 rounded transition duration-200 hover:bg-gray-300 hover:text-primary ps-6"
+        >
+          <a [routerLink]="['/admin-listing']" routerLinkActive="text-primary" class="ms-9">Admin Listing</a>
+        </li>
+        <li
+          class="flex py-2.5 px-4 rounded transition duration-200 hover:bg-gray-300 hover:text-primary ps-6"
+        >
+          <a [routerLink]="['/admin-register']" routerLinkActive="text-primary" class="ms-9">Register New Admin</a>
+        </li>
+      </ul>
   </nav>
 </div>
